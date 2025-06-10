@@ -1,7 +1,8 @@
 /* filepath: globals.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: all;
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -16,6 +17,7 @@
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
+  
   padding: 1rem;
+  
 }
