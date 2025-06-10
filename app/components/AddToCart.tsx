@@ -6,7 +6,7 @@ const AddToCart = () => {
   return (
     <div>
       <button onClick={()=> console.log('Button clicked!')}>
-        Click Me
+        Add to Cart
       </button>
     </div>
   )
