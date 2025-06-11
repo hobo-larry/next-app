@@ -4,9 +4,8 @@ interface Props{
     params:{id:number; photoid:number}
 }
 
-const PhotoDetailPage = async ({ params }: Props) => {
-  const { id, photoid } = await params; // Await the params Promise and destructure
-  console.log(photoid);
+const PhotoDetailPage =  ({ params:{id, photoid} }: Props) => {
+  
   return (
     <div>PhotoDetailPage for User {id}, Photo {photoid}</div>
     
