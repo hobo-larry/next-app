@@ -39,3 +39,17 @@ export async function PUT(request:NextRequest, {params}:{params: {id: number }})
 }
 
 
+export async function DELETE(request:NextRequest, {params}:{params: {id: number }}){
+   
+    if(!params.id){
+    return NextResponse.json({error:'invalid id'}, {status:400})
+  }
+  if(params.id >10 ){
+    return NextResponse.json({error:'user not found'}, {status:404})
+
+
+  }else{
+    return NextResponse.json("User deleted")
+  }
+  
+}
