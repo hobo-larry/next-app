@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import schema from "../schema";
 
 
 
@@ -25,8 +26,9 @@ export async function PUT(request:NextRequest, {params}:{params: {id: number }})
   //else update user
   //return updated user
   const body =  await request.json()
-  if(!body.name){
-    return NextResponse.json({error:'invalid name'}, {status:400})
+  const validation = schema.safeParse(body)
+  if(!validation.success){
+    return NextResponse.json(validation.error.errors, {status:400})
   }
   if(params.id >10 ){
     return NextResponse.json({error:'user not found'}, {status:404})
