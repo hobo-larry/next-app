@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import schema from "./schema";
+import { prisma } from "@/prisma/client";
 
-export function GET(request:NextRequest){
-    return NextResponse.json([
-        {id: 1, name: 'jhon'},
-        {id: 1, name: 'mOSH'}
-])
+export async function GET(request:NextRequest){
+  try {
+    const users = await prisma.user.findMany();
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json({ error: 'Failed to fetch users' }, { status: 500 });
+  }
+
 }
 
 export async function POST(request:NextRequest){
