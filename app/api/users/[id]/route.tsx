@@ -32,7 +32,7 @@ export async function GET(request:NextRequest, {params}:{params: {id: string }})
 }
 
 
-export async function PUT(request:NextRequest, {params}:{params: {id: number }}){
+export async function PUT(request:NextRequest, {params}:{params: {id: string }}){
   //validate the request body
   //if invalid, return 400
   //fetch the user with the given id
@@ -42,17 +42,30 @@ export async function PUT(request:NextRequest, {params}:{params: {id: number }})
   //return updated user
   const body =  await request.json()
   const validation = schema.safeParse(body)
+  const idUser = parseInt(params.id)
+  const userAmout = await prisma.user.count()
   if(!validation.success){
     return NextResponse.json(validation.error.errors, {status:400})
   }
-  if(params.id >10 ){
-    return NextResponse.json({error:'user not found'}, {status:404})
+  const uniqueUser = await prisma.user.findUnique({
+    where: { id: idUser },
+  });
 
+  if (idUser > userAmout)
+    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
 
-  }else{
-    return NextResponse.json({id:1, name:body.name})
-  }
-  
+  if (!uniqueUser)
+    return NextResponse.json({ error: 'user not found' }, { status: 404 });
+
+  const updatedUser = await prisma.user.update({
+    where: { id: uniqueUser.id }, // Ensure id is valid
+    data: {
+      name: body.name,
+      email: body.email,
+    },
+  });
+
+  return NextResponse.json(updatedUser, { status: 200 });
 }
 
 
