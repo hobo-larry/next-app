@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import schema from "../schema";
 import { prisma } from "@/prisma/client";
+import next from "next";
 
 
 
@@ -69,17 +70,29 @@ export async function PUT(request:NextRequest, {params}:{params: {id: string }})
 }
 
 
-export async function DELETE(request:NextRequest, {params}:{params: {id: number }}){
+export async function DELETE(request:NextRequest, {params}:{params: {id: string }}){
    
-    if(!params.id){
-    return NextResponse.json({error:'invalid id'}, {status:400})
-  }
-  if(params.id >10 ){
-    return NextResponse.json({error:'user not found'}, {status:404})
-
-
-  }else{
-    return NextResponse.json("User deleted")
-  }
   
+  
+  const idUser = parseInt(params.id)
+  const userAmout = await prisma.user.count()
+  
+  const uniqueUser = await prisma.user.findUnique({
+    where: { id: idUser },
+  });
+
+  if (idUser > userAmout)
+    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
+
+  if (!uniqueUser)
+    return NextResponse.json({ error: 'user not found' }, { status: 404 });
+  else {
+    await prisma.user.delete({
+      where: { id: uniqueUser.id }, // Ensure id is valid
+    });
+  }
+
+  
+
+  return NextResponse.json('User deleted!', { status: 200 });
 }
