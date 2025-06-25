@@ -21,7 +21,38 @@ const uploadFile = () => {
     src={publicId}
     sizes="100vw"
     alt="Description of my image"/>}
-    <CldUploadWidget uploadPreset='testUploadPreset' onSuccess={(result, widget)=>{
+    <CldUploadWidget
+    options={{
+      multiple: true,
+      maxFiles:5,
+      sources: [
+        "local",
+        "url",
+        "camera",
+        "google_drive",
+        "facebook",
+        "dropbox",
+        "instagram"
+    ],
+    styles: {
+        palette: {
+            window: "#000000",
+            sourceBg: "#000000",
+            windowBorder: "#8E9FBF",
+            tabIcon: "#FFFFFF",
+            inactiveTabIcon: "#8E9FBF",
+            menuIcons: "#2AD9FF",
+            link: "#08C0FF",
+            action: "#336BFF",
+            inProgress: "#00BFFF",
+            complete: "#33ff00",
+            error: "#EA2727",
+            textDark: "#000000",
+            textLight: "#FFFFFF"
+        }
+    }}}
+    
+     uploadPreset='testUploadPreset' onSuccess={(result, widget)=>{
       if(result.event !== "success") {
         return}
         else{ const info = result.info as cloudinaryResult;
