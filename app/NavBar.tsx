@@ -7,18 +7,32 @@ const NavBar = () => {
   const {status, data: session} = useSession()
   
   return (
-    <div className='flex bg-slate-200 p-3 space-x-3'>
-        <Link href='/' className='mr-5'>NextJs</Link>
-        <Link href='/users' >Users</Link>
-        {status === 'loading' && <div>Loading...</div>}
-        {status === 'authenticated' && 
-        <div> 
+    <div className="flex bg-slate-200 p-3 space-x-3">
+      <Link href="/" className="mr-5">
+        NextJs
+      </Link>
+      <Link href="/users">Users</Link>
+      {status === "loading" && <div>Loading...</div>}
+      {status === "authenticated" && (
+        <div>
           {session.user!.name}
-          <Link href='/api/auth/signout' className='ml-3'>Logout</Link>
-        </div>}
-        {status === 'unauthenticated' && <Link href='/api/auth/signin' >Login </Link>}
+          {session.user!.image && (
+            <img
+              src={session.user!.image}
+              alt="user image"
+              className="w-7 h-7 rounded-full inline-block ml-2"
+            />
+          )}
+          <Link href="/api/auth/signout" className="ml-3">
+            Logout
+          </Link>
+        </div>
+      )}
+      {status === "unauthenticated" && (
+        <Link href="/api/auth/signin">Login </Link>
+      )}
     </div>
-  )
+  );
 }
 
 export default NavBar

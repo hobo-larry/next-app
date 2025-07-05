@@ -20,6 +20,9 @@ model Account {
   scope              String?
   id_token           String? @db.Text
   session_state      String?
+    // Add these for Twitter OAuth 1.0
+  oauth_token         String?     // ✅ Add this
+  oauth_token_secret  String?     // ✅ Add this
  
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
  
