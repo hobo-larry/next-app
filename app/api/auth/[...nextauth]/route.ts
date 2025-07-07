@@ -30,7 +30,7 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
-        // Example: Replace this with your actual user lookup logic
+        
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
@@ -40,7 +40,15 @@ export const authOptions: NextAuthOptions = {
           credentials.password,
           user.hashedPassword!
         );
-        return passwordsMatch ? user : null;
+        if (!passwordsMatch) return null;
+
+        // ✅ Return only safe fields
+        return {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          image: user.image,
+        };
       },
     }),
 

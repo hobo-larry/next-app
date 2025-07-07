@@ -23,13 +23,23 @@ const NavBar = () => {
               className="w-7 h-7 rounded-full inline-block ml-2"
             />
           )}
+          <Link href="/upload" className="ml-3">
+            Upload
+          </Link>
           <Link href="/api/auth/signout" className="ml-3">
             Logout
           </Link>
         </div>
       )}
       {status === "unauthenticated" && (
-        <Link href="/api/auth/signin">Login </Link>
+        <div>
+          <Link href="/api/auth/signin" className="ml-3">
+            Sign In
+          </Link>
+          <Link href="/signup" className="ml-3">
+            Sign Up
+          </Link>
+        </div>
       )}
     </div>
   );
