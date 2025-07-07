@@ -7,21 +7,43 @@ const NavBar = () => {
   const {status, data: session} = useSession()
   
   return (
-    <div className="flex bg-slate-200 p-3 space-x-3">
+    <div className="flex bg-slate-200 p-3 space-x-3 items-center">
       <Link href="/" className="mr-5">
         NextJs
       </Link>
-      <Link href="/users">Users</Link>
+
       {status === "loading" && <div>Loading...</div>}
       {status === "authenticated" && (
         <div>
-          {session.user!.name}
+          <Link href="/users">Users</Link>
           {session.user!.image && (
-            <img
-              src={session.user!.image}
-              alt="user image"
-              className="w-7 h-7 rounded-full inline-block ml-2"
-            />
+            <div className="dropdown">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost btn-circle avatar"
+              >
+                <img
+                  src={session.user!.image}
+                  alt="user image"
+                  className="w-10 h-10 rounded-full inline-block ml-2"
+                  onClick={() => console.log("User image clicked")}
+                />
+              </div>
+              <ul
+                tabIndex={0}
+                className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+              >
+                <li>
+                  <Link href="/profile" className="justify-between">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <a>Item 2</a>
+                </li>
+              </ul>
+            </div>
           )}
           <Link href="/upload" className="ml-3">
             Upload

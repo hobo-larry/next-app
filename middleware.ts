@@ -8,8 +8,11 @@ export { default } from "next-auth/middleware";//import and export the default m
 
 
 export const config = {
-    // *: zero or more characters
-    //+: one or more characters
-    //?: zero or one character
-    matcher: '/users/:id*', // This middleware will only run for requests to /old-page
+  // *: zero or more characters
+  //+: one or more characters
+  //?: zero or one character
+  matcher: [
+    // Apply middleware to all routes except those listed below
+    "/((?!api/auth|_next/static|_next/image|favicon.ico|signin|signup|$).*)",
+  ],
 };
