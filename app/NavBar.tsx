@@ -40,8 +40,11 @@ const NavBar = () => {
                 className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
               >
                 <li>
-                  <Link href="/profile" className="justify-between">
-                    Profile
+                  <Link
+                    href="/profile/changepassword"
+                    className="justify-between"
+                  >
+                    Change Password
                   </Link>
                 </li>
                 <li>
