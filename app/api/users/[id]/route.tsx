@@ -11,10 +11,10 @@ export async function GET(request:NextRequest, {params}:{params: {id: string }})
     //else, retunr actuall data
     try {
       const user = await prisma.user.findUnique({
-      where: {
-        id: parseInt(params.id), // Convert string to integer
-      },
-    });
+        where: {
+          id: params.id, // Convert string to integer
+        },
+      });
     if(!user){
         return NextResponse.json({error: 'user not found'}, {status:404})
     }
@@ -33,7 +33,10 @@ export async function GET(request:NextRequest, {params}:{params: {id: string }})
 }
 
 
-export async function PUT(request:NextRequest, {params}:{params: {id: string }}){
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   //validate the request body
   //if invalid, return 400
   //fetch the user with the given id
@@ -41,22 +44,22 @@ export async function PUT(request:NextRequest, {params}:{params: {id: string }})
   // error  404
   //else update user
   //return updated user
-  const body =  await request.json()
-  const validation = schema.safeParse(body)
-  const idUser = parseInt(params.id)
-  const userAmout = await prisma.user.count()
-  if(!validation.success){
-    return NextResponse.json(validation.error.errors, {status:400})
+  const body = await request.json();
+  const validation = schema.safeParse(body);
+  const idUser = parseInt(params.id);
+  const userAmout = await prisma.user.count();
+  if (!validation.success) {
+    return NextResponse.json(validation.error.errors, { status: 400 });
   }
   const uniqueUser = await prisma.user.findUnique({
-    where: { id: idUser },
+    where: { id: params.id }, // Ensure id is valid
   });
 
   if (idUser > userAmout)
-    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
+    return NextResponse.json({ error: "invalid id" }, { status: 400 });
 
   if (!uniqueUser)
-    return NextResponse.json({ error: 'user not found' }, { status: 404 });
+    return NextResponse.json({ error: "user not found" }, { status: 404 });
 
   const updatedUser = await prisma.user.update({
     where: { id: uniqueUser.id }, // Ensure id is valid
@@ -69,30 +72,27 @@ export async function PUT(request:NextRequest, {params}:{params: {id: string }})
   return NextResponse.json(updatedUser, { status: 200 });
 }
 
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const idUser = parseInt(params.id);
+  const userAmout = await prisma.user.count();
 
-export async function DELETE(request:NextRequest, {params}:{params: {id: string }}){
-   
-  
-  
-  const idUser = parseInt(params.id)
-  const userAmout = await prisma.user.count()
-  
   const uniqueUser = await prisma.user.findUnique({
-    where: { id: idUser },
+    where: { id: params.id },
   });
 
   if (idUser > userAmout)
-    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
+    return NextResponse.json({ error: "invalid id" }, { status: 400 });
 
   if (!uniqueUser)
-    return NextResponse.json({ error: 'user not found' }, { status: 404 });
+    return NextResponse.json({ error: "user not found" }, { status: 404 });
   else {
     await prisma.user.delete({
       where: { id: uniqueUser.id }, // Ensure id is valid
     });
   }
 
-  
-
-  return NextResponse.json('User deleted!', { status: 200 });
+  return NextResponse.json("User deleted!", { status: 200 });
 }
